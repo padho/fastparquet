@@ -193,7 +193,7 @@ def convert(data, se):
         except Exception as e:
             ct = parquet_thrift.ConvertedType._VALUES_TO_NAMES[
                 converted_type] if converted_type is not None else None
-            return np.array([]) # hackfix for corrupted data
+            return np.empty([], dtype=np.generic) # hackfix for corrupted data
             #raise ValueError('Error converting column "%s" to bytes using '
             #                 'encoding %s. Original error: '
             #                 '%s' % (data.name, ct, e))
@@ -211,7 +211,7 @@ def convert(data, se):
         out['ns'] = ns
         out['day'] = day
     else:
-        return np.array([]) # hackfix for corrupted data
+        return np.empty([], dtype=np.generic) # hackfix for corrupted data
         #raise ValueError("Don't know how to convert data type: %s" % dtype)
     return out
 
