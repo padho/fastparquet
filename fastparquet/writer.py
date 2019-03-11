@@ -159,14 +159,7 @@ def convert(data, se):
     type = se.type
     converted_type = se.converted_type
 
-    print(dtype.name)
-    print(type)
-    print(data.values)
-    print('----')
-
     if dtype.name in typemap:
-        if type == 5:
-            out = ''.join(e for e in ''.join(data.values) if e.isalnum())
         if type in revmap:
             out = data.values.astype(revmap[type], copy=False)
         elif type == parquet_thrift.Type.BOOLEAN:
