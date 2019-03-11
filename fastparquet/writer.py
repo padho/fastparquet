@@ -256,7 +256,7 @@ def encode_plain(data, se):
     if se.type == parquet_thrift.Type.BYTE_ARRAY:
         return pack_byte_array(list(out))
     else:
-        return out.tobytes()
+        return pack_byte_array(list(out))
 
 
 @numba.njit(nogil=True)
