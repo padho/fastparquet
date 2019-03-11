@@ -193,10 +193,10 @@ def convert(data, se):
         except Exception as e:
             ct = parquet_thrift.ConvertedType._VALUES_TO_NAMES[
                 converted_type] if converted_type is not None else None
-            return np.empty([1], dtype=np.generic) # hackfix for corrupted data
-            #raise ValueError('Error converting column "%s" to bytes using '
-            #                 'encoding %s. Original error: '
-            #                 '%s' % (data.name, ct, e))
+            #return np.empty([1], dtype=np.generic) # hackfix for corrupted data
+            raise ValueError('Error converting column "%s" to bytes using '
+                             'encoding %s. Original error: '
+                             '%s' % (data.name, ct, e))
     elif converted_type == parquet_thrift.ConvertedType.TIMESTAMP_MICROS:
         out = np.empty(len(data), 'int64')
         time_shift(data.values.view('int64'), out)
@@ -211,8 +211,8 @@ def convert(data, se):
         out['ns'] = ns
         out['day'] = day
     else:
-        return np.empty([1], dtype=np.generic) # hackfix for corrupted data
-        #raise ValueError("Don't know how to convert data type: %s" % dtype)
+        #return np.empty([1], dtype=np.generic) # hackfix for corrupted data
+        raise ValueError("Don't know how to convert data type: %s" % dtype)
     return out
 
 
@@ -256,7 +256,7 @@ def encode_plain(data, se):
     if se.type == parquet_thrift.Type.BYTE_ARRAY:
         return pack_byte_array(list(out))
     else:
-        return pack_byte_array(list(out))
+        return out.tobytes()
 
 
 @numba.njit(nogil=True)
